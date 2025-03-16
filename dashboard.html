@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FraudGuard - Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/3572/3572730.png" alt="Shield Logo">
+        FraudGuard
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li id="authLinks"></li>
+      </ul>
+      <div class="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Page Content -->
+  <section id="dashboard" class="page active">
+    <div class="container">
+      <nav class="dashboard-nav">
+        <button onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload Dataset</button>
+        <button onclick="showSection('model')"><i class="fas fa-cogs"></i> Choose Model</button>
+        <button onclick="showSection('predict')"><i class="fas fa-search"></i> Predict</button>
+      </nav>
+
+      <!-- Upload Section -->
+      <div id="upload" class="dashboard-section active">
+        <h2>Upload Dataset</h2>
+        <input type="file" id="datasetInput" accept=".csv">
+        <div id="datasetPreview"></div>
+      </div>
+
+      <!-- Model Selection Section -->
+      <div id="model" class="dashboard-section">
+        <h2>Select Model</h2>
+        <select id="modelSelect">
+          <option value="rf">Random Forest</option>
+          <option value="lr">Logistic Regression</option>
+          <option value="svm">Support Vector Machine</option>
+        </select>
+        <button onclick="showAccuracy()">Evaluate Model</button>
+        <div id="accuracyResult"></div>
+      </div>
+
+      <!-- Prediction Section -->
+      <div id="predict" class="dashboard-section">
+        <h2>Transaction Prediction</h2>
+        <form id="predictionForm">
+          <input type="number" placeholder="Amount" required>
+          <input type="date" required>
+          <input type="time" required>
+          <select id="senderType">
+            <option>Digital Payment</option>
+            <option>Bank Transfer</option>
+          </select>
+          <select id="receiverType">
+            <option>Digital Payment</option>
+            <option>Bank Account</option>
+          </select>
+          <button type="submit">Check Fraud</button>
+        </form>
+        <div id="predictionResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
