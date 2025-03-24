@@ -28,12 +28,20 @@
 
   <!-- Registration Page Content -->
   <section id="register" class="page active">
-    <div class="container">
+    <div class="register-container">
       <h2>Register</h2>
       <form id="registerForm">
         <input type="text" placeholder="Full Name" required>
         <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <!-- Password Conditions List -->
+        <ul class="password-conditions" id="passwordConditions">
+          <li id="lengthCondition">Minimum 8 characters</li>
+          <li id="uppercaseCondition">At least one uppercase letter</li>
+          <li id="lowercaseCondition">At least one lowercase letter</li>
+          <li id="numberCondition">At least one number</li>
+          <li id="specialCondition">At least one special character</li>
+        </ul>
         <input type="password" placeholder="Confirm Password" required>
         <button type="submit">Register</button>
       </form>
