@@ -10,12 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update navigation bar based on login state
   const authLinksContainer = document.getElementById('authLinks');
   const currentUser = localStorage.getItem('currentUser');
-  if (currentUser && authLinksContainer) {
-    // When logged in, show only the Logout button (Dashboard link is already in the main nav)
-    authLinksContainer.innerHTML = `<button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
-  } else if (authLinksContainer) {
-    authLinksContainer.innerHTML = `<a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
-                                    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+  if (authLinksContainer) {
+    if (currentUser) {
+      // If on dashboard page, don't show duplicate dashboard link
+      if (window.location.pathname.includes("dashboard.html")) {
+        authLinksContainer.innerHTML = `<button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+      } else {
+        authLinksContainer.innerHTML = `<a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a> <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+      }
+    } else {
+      authLinksContainer.innerHTML = `<a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                                      <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+    }
   }
 
   // Logout button event listener
@@ -42,10 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Save user info in localStorage (for demo purposes)
       const user = { name: fullName, email: email };
       localStorage.setItem('currentUser', JSON.stringify(user));
-      // Redirect to Dashboard
       window.location.href = "dashboard.html";
     });
   }
@@ -57,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const email = loginForm.elements[0].value;
       const password = loginForm.elements[1].value;
-      // For demonstration, we skip password validation
       const user = { email: email };
       localStorage.setItem('currentUser', JSON.stringify(user));
       window.location.href = "dashboard.html";
@@ -88,9 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
       predictionForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const isFraud = Math.random() < 0.3;
-        const predictionResult = document.getElementById('predictionResult');
-        predictionResult.textContent = isFraud ? "Fraud Detected!" : "Legitimate Transaction";
-        predictionResult.className = isFraud ? "fraud" : "legitimate";
+        if (isFraud) {
+          showPopup("Fraud Detected!", "error");
+        } else {
+          showPopup("Legitimate Transaction", "success");
+        }
       });
     }
   }
@@ -121,10 +126,10 @@ function showAccuracy() {
   accuracyResult.textContent = accuracies[model];
 }
 
-// Display CSV preview for the uploaded dataset
+// Updated displayCSVPreview: Show all rows
 function displayCSVPreview(data) {
   const preview = document.getElementById('datasetPreview');
-  const rows = data.split('\n').slice(0, 5);
+  const rows = data.split('\n');
   let html = '<table>';
   rows.forEach(row => {
     html += '<tr>';
@@ -140,7 +145,48 @@ function displayCSVPreview(data) {
 // Background Zoom Effect on Scroll
 window.addEventListener('scroll', () => {
   const scrollPos = window.scrollY;
-  // Adjust the divisor to control zoom speed (e.g., 1000 for subtle effect)
   const scaleVal = 1 + scrollPos / 1000;
   document.documentElement.style.setProperty('--bg-scale', scaleVal);
 });
+
+// New function to show popup message
+function showPopup(message, type) {
+  let popup = document.getElementById('popupMessage');
+  if (!popup) {
+    popup = document.createElement('div');
+    popup.id = 'popupMessage';
+    document.body.appendChild(popup);
+  }
+  popup.textContent = message;
+  popup.className = type; // "success" or "error"
+  popup.style.display = 'block';
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
+}
+
+// --- New Code for Password Validation (Registration Page) ---
+const passwordInput = document.getElementById('password');
+if (passwordInput) {
+  const conditions = {
+    length: { regex: /.{8,}/, element: document.getElementById('lengthCondition') },
+    uppercase: { regex: /[A-Z]/, element: document.getElementById('uppercaseCondition') },
+    lowercase: { regex: /[a-z]/, element: document.getElementById('lowercaseCondition') },
+    number: { regex: /[0-9]/, element: document.getElementById('numberCondition') },
+    special: { regex: /[!@#$%^&*(),.?":{}|<>]/, element: document.getElementById('specialCondition') }
+  };
+
+  passwordInput.addEventListener('input', () => {
+    const value = passwordInput.value;
+    Object.keys(conditions).forEach(key => {
+      const condition = conditions[key];
+      if (condition.regex.test(value)) {
+        condition.element.classList.add('valid');
+        condition.element.classList.remove('invalid');
+      } else {
+        condition.element.classList.add('invalid');
+        condition.element.classList.remove('valid');
+      }
+    });
+  });
+}
