@@ -58,24 +58,44 @@
       <!-- Prediction Section -->
       <div id="predict" class="dashboard-section">
         <h2>Transaction Prediction</h2>
-        <form id="predictionForm">
-          <input type="number" placeholder="Amount" required>
-          <input type="date" required>
-          <input type="time" required>
-          <select id="senderType">
-            <option>Digital Payment</option>
-            <option>Bank Transfer</option>
-          </select>
-          <select id="receiverType">
-            <option>Digital Payment</option>
-            <option>Bank Account</option>
-          </select>
-          <button type="submit">Check Fraud</button>
-        </form>
-        <div id="predictionResult"></div>
+        <div class="prediction-card">
+          <form id="predictionForm">
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="number" placeholder="Amount" required>
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" required>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" required>
+            </div>
+            <div class="form-group">
+              <label>Sender Type</label>
+              <select id="senderType">
+                <option>Digital Payment</option>
+                <option>Bank Transfer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Receiver Type</label>
+              <select id="receiverType">
+                <option>Digital Payment</option>
+                <option>Bank Account</option>
+              </select>
+            </div>
+            <button type="submit">Check Fraud</button>
+          </form>
+          <div id="predictionResult"></div>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Popup Message Container -->
+  <div id="popupMessage"></div>
 
   <script src="script.js"></script>
 </body>
