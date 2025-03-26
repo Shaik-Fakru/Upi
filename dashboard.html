@@ -50,6 +50,7 @@
           <option value="rf">Random Forest</option>
           <option value="lr">Logistic Regression</option>
           <option value="svm">Support Vector Machine</option>
+          <option value="svm">Decision Tree</option>
         </select>
         <button onclick="showAccuracy()">Evaluate Model</button>
         <div id="accuracyResult"></div>
@@ -60,6 +61,14 @@
         <h2>Transaction Prediction</h2>
         <div class="prediction-card">
           <form id="predictionForm">
+            <div class="form-group">
+              <label>Transaction Id</label>
+              <input type="number" placeholder="Transaction Id" required>
+            </div>
+            <div class="form-group">
+              <label>Merchant Id</label>
+              <input type="number" placeholder="Merchant Id" required>
+            </div>
             <div class="form-group">
               <label>Amount</label>
               <input type="number" placeholder="Amount" required>
